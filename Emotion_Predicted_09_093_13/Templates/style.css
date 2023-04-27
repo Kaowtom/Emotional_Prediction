@@ -1,0 +1,16 @@
+.row {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+  }
+  
+  .col {
+    flex: 1;
+    text-align: center;
+  }
+  
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  

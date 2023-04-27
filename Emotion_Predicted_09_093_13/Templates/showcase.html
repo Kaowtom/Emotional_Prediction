@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detected Slides</title>
+    <style>
+        body {
+            background-color: darkgray;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Detected Slides</h1>
+        {% for slide_num, slide_data in slides.items() %}
+        <div style="text-align: center;">
+            <h3>Slide {{ slide_num + 1 }} - Timestamp: {{ slide_data.timestamp }} seconds</h3>
+            <img src="{{ url_for('static', filename='slide/slide_' + (slide_num + 1)|string + '.jpg') }}" alt="Slide {{ slide_num + 1 }}" style="max-width: 80%;">
+        </div>
+        <div style="text-align: center;">
+            <h3>Slide {{ slide_num + 1 }} - Emotion: {{ emotionals[slide_num].emo }}</h3>
+            <img src="{{ url_for('static', filename='emotion/emotion_' + (slide_num + 1)|string + '.jpg') }}" alt="Slide {{ slide_num + 1 }}" style="max-width: 50%;">
+            {% set emotions = emotionals[slide_num].emo %}
+            {% set emotion_counts = emotions|count %}
+            {% set unique_emotions = emotions|unique %}
+            <div>
+                <h3>Emotional Summary</h3>
+                <p>Total: {{ emotion_counts }}</p>
+                <canvas id="myChart{{ slide_num }}" width="70" height="70"></canvas>
+                <script>
+                    var ctx{{ slide_num }} = document.getElementById('myChart{{ slide_num }}').getContext('2d');
+                    var unique_emotions{{ slide_num }} = {{ unique_emotions|list|tojson }};
+                    var emotion_counts{{ slide_num }} = {{ emotions|unique|map('count')|list|tojson }};
+                    var myChart{{ slide_num }} = new Chart(ctx{{ slide_num }}, {
+                        type: 'bar',
+                        data: {
+                            labels: unique_emotions{{ slide_num }},
+                            datasets: [{
+                                label: 'Emotional Summary',
+                                data: emotion_counts{{ slide_num }},
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(255, 206, 86, 0.2)',
+                                    'rgba(75, 192, 192, 0.2)',
+                                    'rgba(153, 102, 255, 0.2)',
+                                    'rgba(255, 159, 64, 0.2)'
+                                ],
+                                borderColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)',
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(153, 102, 255, 1)',
+                                    'rgba(255, 159, 64, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                </script>
+            </div>
+        </div>
+    {% endfor %}
+    <br>
+    <a href="/">Back to Upload</a>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slide Detection</title>
+    <style>
+        body {
+            background-color: darkgray;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+    </style>
+    <script>
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <h1>Emotion Detector from lecturing Video</h1>
+        <form action="/" method="post" enctype="multipart/form-data" onsubmit="showLoading();">
+            <input type="file" name="video" accept="video/*" required>
+            <br>
+            <button type="submit">Analyze</button>
+        </form>
+        <div id="loading" style="display: none;">
+            <h2>Loading, please wait...</h2>
+        </div>
+    </div>
+</body>
+</html>
